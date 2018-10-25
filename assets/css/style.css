@@ -1,0 +1,24 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100px;
+    margin-bottom: 20px;
+    background-color: black;
+    color: red;
+}
+
+section form{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+input {
+    width: 20vw;
+}
