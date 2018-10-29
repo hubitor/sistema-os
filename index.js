@@ -11,7 +11,17 @@ app.use(bodyParser.urlencoded());
 
 
 app.get('/', function(req, res) {
-    res.render('home');
+fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
+    if(erro){
+        console.log(erro);
+        return;
+    }
+
+
+     res.render("home", {'lista':dados});
+});
+    
+    
 });
 
 
