@@ -22,3 +22,20 @@ section form{
 input {
     width: 20vw;
 }
+
+.relatorio{
+    display: flex;
+    justify-content: center;
+    margin: 20px 0px;
+}
+
+li{
+    list-style: none;
+    padding: 5px;
+    border: 1px solid lightgray;
+}
+
+ul{
+    padding: 0;
+}
+

@@ -16,10 +16,13 @@ app.get('/', function(req, res) {
             console.log(erro);
             return;
         }
-        let colunas = [dados.split(',')];
-        let linhas = [dados.split('\n')];
-
-        res.render('home', {'lista': linhas});
+        let info = [];
+        let linhas = dados.split('\n');
+        for (let linha of linhas){
+            info.push(linha);
+        }
+       // console.log(info);
+        res.render('home', {'lista': info});
     });
     
 
@@ -27,12 +30,12 @@ app.get('/', function(req, res) {
 
 
 app.post('/', function(req, res){
-    console.log(req.body);
+    let produto = req.body.produto;
     let os = req.body.os;
     let conserto = req.body.conserto;
     let data = req.body.data;
     
-    let dados = `${os}, ${conserto}, ${data}\n`;
+    let dados = `${produto}, ${os}, ${conserto}, ${data}\n`;
     
     
     fs.writeFile('dados.csv', dados, {flag: 'a'},function(erro){
@@ -46,12 +49,11 @@ app.post('/', function(req, res){
                 console.log(erro);
                 return;
             }
-            let item = [dados.split(',')];
-            res.render('home', {'lista': item});
+            let itens = dados.split('\n');
+            res.render('home', {'lista': itens});
         });
     });
     console.log("Arquivo salvo com sucesso");
-   // res.render('home');
     
 });
 

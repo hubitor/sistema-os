@@ -14,11 +14,11 @@
     <section>
         <form method="POST">
             <select name="produto" id="produto">
-                <option value="388">TRC-388</option>
-                <option value="389">TRC-389</option>
-                <option value="338">TRC-338</option>
-                <option value="339">TRC-339</option>
-                <option value="358">TRC-358</option>
+                <option value="TRC-388">TRC-388</option>
+                <option value="TRC-389">TRC-389</option>
+                <option value="TRC-338">TRC-338</option>
+                <option value="TRC-339">TRC-339</option>
+                <option value="TRC-358">TRC-358</option>
             </select>
             <input type="text" name="os" placeholder="Numero da OS">
             <input type="text" name="conserto" placeholder="O que foi feito">
@@ -26,10 +26,12 @@
             <button>Enviar</button>
         </form>
         <div class="relatorio">
-            <% for(let index of lista){ %>
-                <li><%= index%></li>                    
-            <% } %>
+            <ul>
+                <% for(let item of lista){ %>
+                    <li><%= item%></li>                    
+                    <% } %>
+            </ul>
         </div>
     </section>
 </body>
-</html>
+    </html>
