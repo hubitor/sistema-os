@@ -26,7 +26,9 @@
             <button>Enviar</button>
         </form>
         <div class="relatorio">
-            <%=dados%>
+            <% for(let index of lista){ %>
+                <li><%= index%></li>                    
+            <% } %>
         </div>
     </section>
 </body>

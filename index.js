@@ -11,17 +11,18 @@ app.use(bodyParser.urlencoded());
 
 
 app.get('/', function(req, res) {
-fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
-    if(erro){
-        console.log(erro);
-        return;
-    }
+    fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
+        if(erro){
+            console.log(erro);
+            return;
+        }
+        let colunas = [dados.split(',')];
+        let linhas = [dados.split('\n')];
 
+        res.render('home', {'lista': linhas});
+    });
+    
 
-     res.render("home", {'lista':dados});
-});
-    
-    
 });
 
 
@@ -31,17 +32,26 @@ app.post('/', function(req, res){
     let conserto = req.body.conserto;
     let data = req.body.data;
     
-    let dados = [os, conserto, data];
+    let dados = `${os}, ${conserto}, ${data}\n`;
     
     
-    fs.writeFile('dados.csv', dados, function(erro){
+    fs.writeFile('dados.csv', dados, {flag: 'a'},function(erro){
         if (erro){
             console.log(erro);
             return;
         }
+
+        fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
+            if(erro){
+                console.log(erro);
+                return;
+            }
+            let item = [dados.split(',')];
+            res.render('home', {'lista': item});
+        });
     });
     console.log("Arquivo salvo com sucesso");
-    res.render('home');
+   // res.render('home');
     
 });
 
