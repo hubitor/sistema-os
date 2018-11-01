@@ -1,0 +1,49 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100px;
+    margin-bottom: 20px;
+    background-color: black;
+    color: red;
+}
+
+section form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 0;
+}
+
+input {
+    width: 20vw;
+    margin: 10px 0px;
+}
+
+
+section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.conteiner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50vw;
+    height: 50vh;
+}
+
+input{
+    height: 15px;
+    width: 80%;
+}

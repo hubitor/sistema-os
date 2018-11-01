@@ -4,13 +4,19 @@ const bodyParser = require ('body-parser');
 
 const app = express();
 
+
+
 app.set('view engine','ejs');
 
 app.use('/assets', express.static('assets'));
 app.use(bodyParser.urlencoded());
 
+app.get('/', function(req, res){
+    res.render('login');
+});
 
-app.get('/', function(req, res) {
+
+app.get('/home', function(req, res) {
     fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
         if(erro){
             console.log(erro);
@@ -28,8 +34,29 @@ app.get('/', function(req, res) {
 
 });
 
+function alert(){
+    alert("deu ruim");
+}
 
 app.post('/', function(req, res){
+    if(req.body.usuario === "eder" && req.body.senha ==="123"){
+        fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
+            if(erro){
+                console.log(erro);
+                return;
+            }
+            let info = [];
+            let linhas = dados.split('\n');
+            for (let linha of linhas){
+                info.push(linha);
+            }
+           // console.log(info);
+            res.redirect('home');
+        });
+    }
+});
+
+app.post('/home', function(req, res){
     let produto = req.body.produto;
     let os = req.body.os;
     let conserto = req.body.conserto;
