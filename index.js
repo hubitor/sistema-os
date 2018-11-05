@@ -39,7 +39,7 @@ function alert(){
 }
 
 app.post('/', function(req, res){
-    if(req.body.usuario === "eder" && req.body.senha ==="123"){
+    if(req.body.usuario.toUpperCase() === "EDER" && req.body.senha ==="123"){
         fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
             if(erro){
                 console.log(erro);
@@ -57,9 +57,9 @@ app.post('/', function(req, res){
 });
 
 app.post('/home', function(req, res){
-    let produto = req.body.produto;
-    let os = req.body.os;
-    let conserto = req.body.conserto;
+    let produto = req.body.produto.toUpperCase();
+    let os = req.body.os.toUpperCase();
+    let conserto = req.body.conserto.toUpperCase();
     let data = req.body.data;
     
     let dados = `${produto}, ${os}, ${conserto}, ${data}\n`;
