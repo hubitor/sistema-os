@@ -22,16 +22,30 @@ app.get('/home', function(req, res) {
             console.log(erro);
             return;
         }
-        let info = [];
+        
+        let produto = [];
+        let os = [];
+        let solucao = [];
+        let data = [];
+        
         let linhas = dados.split('\n');
         for (let linha of linhas){
-            info.push(linha);
+            let colunas = linha.split(';')
+            produto.push(colunas[0]);
+            os.push(colunas[1]);
+            solucao.push(colunas[2]);
+            data.push(colunas[3]); 
         }
-       // console.log(info);
-        res.render('home', {'lista': info});
+        res.render('home', {
+            'lista':[
+             produto, 
+             os,
+             solucao,
+             data]
+            });
     });
     
-
+    
 });
 
 function alert(){
@@ -50,7 +64,6 @@ app.post('/', function(req, res){
             for (let linha of linhas){
                 info.push(linha);
             }
-           // console.log(info);
             res.redirect('home');
         });
     }
@@ -62,7 +75,7 @@ app.post('/home', function(req, res){
     let conserto = req.body.conserto.toUpperCase();
     let data = req.body.data;
     
-    let dados = `${produto}, ${os}, ${conserto}, ${data}\n`;
+    let dados = `${produto}; ${os}; ${conserto}; ${data}\n`;
     
     
     fs.writeFile('dados.csv', dados, {flag: 'a'},function(erro){
@@ -70,14 +83,38 @@ app.post('/home', function(req, res){
             console.log(erro);
             return;
         }
-
+        
         fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
             if(erro){
                 console.log(erro);
                 return;
             }
-            let itens = dados.split('\n');
-            res.render('home', {'lista': itens});
+            
+            let produto = [];
+            let os = [];
+            let solucao = [];
+            let data = [];
+            
+            
+            
+            let linhas = dados.split('\n');
+            for (let linha of linhas){
+                let colunas = linha.split(';')
+                produto.push(colunas[0]);
+                os.push(colunas[1]);
+                solucao.push(colunas[2]);
+                data.push(colunas[3]); 
+            }
+
+            let produtos = {
+                'lista':[
+                 produto, 
+                 os,
+                 solucao,
+                 data,
+                 ]}
+
+            res.redirect('home');
         });
     });
     console.log("Arquivo salvo com sucesso");

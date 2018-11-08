@@ -51,12 +51,29 @@
             <button>Enviar</button>
         </form>
         <div class="relatorio">
-            <ul>
-                <% for(let item of lista){ %>
-                    <li><%= item%></li>                    
-                    <% } %>
-            </ul>
-        </div>
-    </section>
-</body>
-    </html>
+            <table>
+                <tr>
+                    <th>Produto</th>
+                    <th>OS</th>
+                    <th>Solução</th>
+                    <th>Data</th>
+                </tr>
+                
+                
+                <% 
+                for (let index in lista[0]){%>
+                    <tr>
+                        <% for(let item of lista){ %>
+                            <td>
+                                
+                                <%= item[index] %>               
+                                
+                            </td>
+                            <% }%>
+                        </tr>
+                        <%} %>
+                    </table>
+                </div>
+            </section>
+        </body>
+        </html>
