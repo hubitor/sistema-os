@@ -47,9 +47,11 @@
             </select>
             <input type="text" name="os" placeholder="Numero da OS">
             <input type="text" name="conserto" placeholder="O que foi feito">
-            <input type="date" name="data">
+            <input type="date" name="data"> 
+
             <button>Enviar</button>
         </form>
+
         <div class="relatorio">
             <table>
                 <tr>
@@ -63,7 +65,7 @@
                 <% 
                 for (let index in lista[0]){%>
                     <tr>
-                        <% for(let item of lista){ %>
+                        <% for(let item of lista){ var data = [];%>
                             <td>
                                 
                                 <%= item[index] %>               

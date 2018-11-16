@@ -30,7 +30,7 @@ app.get('/home', function(req, res) {
         
         let linhas = dados.split('\n');
         for (let linha of linhas){
-            let colunas = linha.split(';')
+            let colunas = linha.split(';');
             produto.push(colunas[0]);
             os.push(colunas[1]);
             solucao.push(colunas[2]);
@@ -73,9 +73,11 @@ app.post('/home', function(req, res){
     let produto = req.body.produto.toUpperCase();
     let os = req.body.os.toUpperCase();
     let conserto = req.body.conserto.toUpperCase();
-    let data = req.body.data;
+    let data = req.body.data.split('-');
+    let databr = (`${data[2]}-${data[1]}-${data[0]}`);
+    console.log(databr);
     
-    let dados = `${produto}; ${os}; ${conserto}; ${data}\n`;
+    let dados = `${produto}; ${os}; ${conserto}; ${databr}\n`;
     
     
     fs.writeFile('dados.csv', dados, {flag: 'a'},function(erro){

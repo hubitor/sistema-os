@@ -30,12 +30,7 @@ input {
 }
 
 li{
-    list-style: none;
-    padding: 5px;
-    border: 1px solid lightgray;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: bold;
-    font-size: 2vw;
+
 }
 
 ul{
@@ -43,10 +38,14 @@ ul{
 }
 
 table{
-    border: 1px solid black;
+    /* border: 1px solid black; */
 
 }
 
 table td{
     border: 1px solid black;
+    padding: 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    font-size: 1.3vw;
 }
