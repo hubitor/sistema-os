@@ -15,12 +15,28 @@ header{
 }
 
 section form{
-    display: flex;
-    justify-content: space-evenly;
+    display: block;
+    height: 50px;
+    margin: 0 auto;
 }
 
 input {
     width: 20vw;
+    height: 20px;
+}
+
+select {
+    width: 20vw;
+    height: 20px;
+}
+
+button{
+    background-color: lightgreen;
+    border: 2px solid lightgreen;
+    padding: 2px;
+    border-radius: 10px;
+    width: 7vw;
+    height: 25px;
 }
 
 .relatorio{
@@ -29,23 +45,26 @@ input {
     margin: 20px 0px;
 }
 
-li{
-
-}
-
-ul{
-    padding: 0;
-}
-
-table{
-    /* border: 1px solid black; */
-
-}
-
 table td{
     border: 1px solid black;
     padding: 5px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold;
     font-size: 1.3vw;
+
+}
+
+tr td:nth-child(3) .scrollable{
+    /* width: 20vw; */
+    /* height: 20px; */
+    margin: 0;
+    padding: 0;
+    /* flex-wrap: nowrap;
+    overflow-x: scroll; */
+}
+
+section{
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
 }

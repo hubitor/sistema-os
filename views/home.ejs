@@ -44,6 +44,8 @@
                 <option value="NVS-3068">NVS-3068</option>
                 <option value="NVS-3018">NVS-3018</option>
                 <option value="NVS-3030">NVS-3030</option>
+                <option value="NVA-204">NVA-204</option>
+                <option value="NVA-216">NVA-216</option>
             </select>
             <input type="text" name="os" placeholder="Numero da OS">
             <input type="text" name="conserto" placeholder="O que foi feito">
@@ -65,14 +67,16 @@
                 <% 
                 for (let index in lista[0]){%>
                     <tr>
-                        <% for(let item of lista){ var data = [];%>
-                            <td>
+                        <% for(let item of lista){ %>
+                            <td class="id<%=index%>">
+                                <div class="scrollable">
                                 
                                 <%= item[index] %>               
-                                
+                            </div>
                             </td>
                             <% }%>
-                        </tr>
+                            <td class="id<%=index%>"style="border: none; color: red">X</td>
+                        </tr> 
                         <%} %>
                     </table>
                 </div>
