@@ -1,10 +1,12 @@
 const express = require ('express');
 const fs = require ('fs');
 const bodyParser = require ('body-parser');
+const db = require ('express-mongo-db');
+const isNullOrEmpty = require('is-null-or-empty');
 
 const app = express();
 
-
+app.use(db("mongodb://localhost:27017/os"));
 
 app.set('view engine','ejs');
 
@@ -17,127 +19,121 @@ app.get('/', function(req, res){
 
 
 app.get('/home', function(req, res) {
-    fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
-        if(erro){
-            console.log(erro);
-            return;
+    
+    req.db.collection('dados').find({}).toArray((erro, dados)=>{
+        let usuario = [];
+        let produto = [];
+        let os = [];
+        let solucao = [];
+        let data = [];
+        
+        for (let dado of dados){
+            usuario.push(dado.tecnico);
+            produto.push(dado.produto);
+            os.push(dado.os);
+            solucao.push(dado.conserto);
+            data.push(dado.data); 
         }
-        
-        
-        fs.readFile('user.csv', {encoding:'utf-8'}, function(erro, user){
+        res.render('home', {
+            'lista':[
+                usuario,
+                produto, 
+                os,
+                solucao,
+                data]
+            });
+        })
+    });
+    
+    
+    app.get('/home/:id', function (req, res){
+        console.log(req.params);
+        res.send("ok");
+        fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
             if(erro){
                 console.log(erro);
                 return;
             }
             
-            let usuario = [];
-            let produto = [];
-            let os = [];
-            let solucao = [];
-            let data = [];
-            
-            let linhas = dados.split('\n');
-            for (let linha of linhas){
-                let colunas = linha.split(';');
-                usuario.push(colunas[0]);
-                produto.push(colunas[1]);
-                os.push(colunas[2]);
-                solucao.push(colunas[3]);
-                data.push(colunas[4]); 
-            }
-            res.render('home', {
-                'lista':[
-                    usuario,
-                    produto, 
-                    os,
-                    solucao,
-                    data]
-                });
-            });
-        });
-        
-        
-    });
-    
-    function alert(){
-        alert("deu ruim");
-    }
-    
-    app.post('/', function(req, res){
-        if(req.body.usuario.toUpperCase() === "EDER" && req.body.senha ==="123" ||
-        req.body.usuario.toUpperCase() === "VINICIUS" && req.body.senha ==="123" ||
-        req.body.usuario.toUpperCase() === "LUIZ" && req.body.senha ==="123" ||
-        req.body.usuario.toUpperCase() === "MARLON" && req.body.senha ==="123" ||
-        req.body.usuario.toUpperCase() === "FELIPE" && req.body.senha ==="123" ||
-        req.body.usuario.toUpperCase() === "THIAGO" && req.body.senha ==="123" ||
-        req.body.usuario.toUpperCase() === "THOMAZ" && req.body.senha ==="123" ||
-        req.body.usuario.toUpperCase() === "GEOVANNE" && req.body.senha ==="123" ||
-        req.body.usuario.toUpperCase() === "ELOISA" && req.body.senha ==="123" ||
-        req.body.usuario.toUpperCase() === "GUSTAVO" && req.body.senha ==="123"
-        ){
-            
-            fs.writeFile('user.csv', req.body.usuario.toUpperCase(), function(erro){
+            fs.readFile('user.csv', {encoding:'utf-8'}, function(erro, user){
                 if(erro){
-                    console.log(erro);
-                    return;
-                }
-            });
-            
-            
-            fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
-                if(erro){
-                    console.log(erro);
-                    return;
-                }
-                let info = [];
-                let linhas = dados.split('\n');
-                for (let linha of linhas){
-                    info.push(linha);
-                }
-                res.redirect('home');
-            });
-        }
-    });
-    
-    app.post('/home', function(req, res){
-        let produto = req.body.produto.toUpperCase();
-        let os = req.body.os.toUpperCase();
-        let conserto = req.body.conserto.toUpperCase();
-        let data = req.body.data.split('-');
-        let databr = (`${data[2]}-${data[1]}-${data[0]}`);
-        console.log(databr);
-        
-        fs.readFile('user.csv', {encoding:'utf-8'}, function(erro, user){
-            if(erro){
-                console.log(erro);
-                return;
-            }
-            
-            let dados = `${user}; ${produto}; ${os}; ${conserto}; ${databr}\n`;
-            
-            
-            fs.writeFile('dados.csv', dados, {flag: 'a'},function(erro){
-                if (erro){
                     console.log(erro);
                     return;
                 }
                 
-                fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
-                    if(erro){
-                        console.log(erro);
-                        return;
-                    }
-                    
-                    res.redirect('home');
+                let usuario = [];
+                let produto = [];
+                let os = [];
+                let solucao = [];
+                let data = [];
+                
+                let linhas = dados.split('\n');
+                for (let linha of linhas){
+                    let colunas = linha.split(';');
+                    usuario.push(colunas[0]);
+                    produto.push(colunas[1]);
+                    os.push(colunas[2]);
+                    solucao.push(colunas[3]);
+                    data.push(colunas[4]); 
+                }
+                res.render('home', {
+                    'lista':[
+                        usuario,
+                        produto, 
+                        os,
+                        solucao,
+                        data]
+                    });
                 });
             });
+            
         });
         
-        console.log("Arquivo salvo com sucesso");
         
-    });
-    
-    app.listen(3000, ()=>{
-        console.log ("Servidor iniciado em localhost://3000");
-    });
-    
+        app.post('/', function(req, res){
+            req.db.collection('usuarios').find({nome: req.body.usuario.toUpperCase(), senha: req.body.senha}).toArray((erro, dados) => {
+                let nome = undefined;
+                
+                for(let dado of dados){
+                    nome = dado.nome;
+                }
+                
+                if(nome !== undefined){
+                    req.db.collection('registro').drop();
+                    req.db.collection('registro').insert({nome: nome});
+                    res.redirect('home');
+                }else{
+                    res.render('login');
+                }
+            })
+        });
+        
+        app.post('/home', function(req, res){
+            let produto = req.body.produto.toUpperCase();
+            let os = req.body.os.toUpperCase();
+            let conserto = req.body.conserto.toUpperCase();
+            let data = req.body.data.split('-');
+            let databr = (`${data[2]}-${data[1]}-${data[0]}`);
+            let user;
+            
+            req.db.collection('registro').find({}).toArray((erro, dados)=>{
+                for(let dado of dados){
+                    user = dado.nome;
+                }
+                req.db.collection('dados').insert({
+                    tecnico: user,
+                    produto: produto,
+                    os: os,
+                    conserto: conserto, 
+                    data: databr
+                });    
+            });
+            
+            res.redirect('home');      
+            console.log("Arquivo salvo com sucesso");       
+        });
+        
+        app.listen(3000, ()=>{
+            console.log ("Servidor iniciado em localhost://3000");
+        });
+        

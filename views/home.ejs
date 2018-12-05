@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sistema OS</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script defer src=""></script>
 </head>
 <body>
     <header>
@@ -51,18 +52,18 @@
             <input type="text" name="conserto" placeholder="O que foi feito">
             <input type="date" name="data"> 
 
-            <button>Enviar</button>
+            <button><img src="./../assets/imagens/icons8-enviar-e-mail-32.png" alt=""></button>
         </form>
 
         <div class="relatorio">
             <table>
                 <tr>
+                    <th>Técnico</th>
                     <th>Produto</th>
                     <th>OS</th>
                     <th>Solução</th>
                     <th>Data</th>
                 </tr>
-                
                 
                 <% 
                 for (let index in lista[0]){%>
@@ -75,7 +76,7 @@
                             </div>
                             </td>
                             <% }%>
-                            <td class="id<%=index%>"style="border: none; color: red">X</td>
+                            <td class="excluir" class="id<%=index%>"style="border: none; color: red"><a href="home/id<%=index%>">X</a></td>
                         </tr> 
                         <%} %>
                     </table>
