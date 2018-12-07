@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sistema OS</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <script defer src=""></script>
 </head>
 <body>
     <header>
@@ -66,17 +65,16 @@
                 </tr>
                 
                 <% 
-                for (let index in lista[0]){%>
+                for (let index in lista[0]){ var id;%>
                     <tr>
                         <% for(let item of lista){ %>
-                            <td class="id<%=index%>">
-                                <div class="scrollable">
-                                
+                            <td>
                                 <%= item[index] %>               
-                            </div>
                             </td>
-                            <% }%>
-                            <td class="excluir" class="id<%=index%>"style="border: none; color: red"><a href="home/id<%=index%>">X</a></td>
+                            <% id = item[index]}%>
+                            <td class="id<%=index%>" style=" background-color: red; border-left: 20px solid white; color: red">
+                                <a href="/delete/<%= id %>">X</a>
+                            </td>
                         </tr> 
                         <%} %>
                     </table>

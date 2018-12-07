@@ -3,6 +3,7 @@ const fs = require ('fs');
 const bodyParser = require ('body-parser');
 const db = require ('express-mongo-db');
 const isNullOrEmpty = require('is-null-or-empty');
+const ObjectID = require('mongodb').ObjectID;
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get('/home', function(req, res) {
         let os = [];
         let solucao = [];
         let data = [];
+        let id = [];
         
         for (let dado of dados){
             usuario.push(dado.tecnico);
@@ -33,6 +35,7 @@ app.get('/home', function(req, res) {
             os.push(dado.os);
             solucao.push(dado.conserto);
             data.push(dado.data); 
+            id.push(dado._id)
         }
         res.render('home', {
             'lista':[
@@ -40,54 +43,22 @@ app.get('/home', function(req, res) {
                 produto, 
                 os,
                 solucao,
-                data]
+                data,
+                id
+            ]
             });
         })
     });
     
     
-    app.get('/home/:id', function (req, res){
-        console.log(req.params);
-        res.send("ok");
-        fs.readFile('dados.csv', {encoding:'utf-8'}, function(erro, dados){
-            if(erro){
-                console.log(erro);
-                return;
-            }
-            
-            fs.readFile('user.csv', {encoding:'utf-8'}, function(erro, user){
-                if(erro){
-                    console.log(erro);
-                    return;
-                }
-                
-                let usuario = [];
-                let produto = [];
-                let os = [];
-                let solucao = [];
-                let data = [];
-                
-                let linhas = dados.split('\n');
-                for (let linha of linhas){
-                    let colunas = linha.split(';');
-                    usuario.push(colunas[0]);
-                    produto.push(colunas[1]);
-                    os.push(colunas[2]);
-                    solucao.push(colunas[3]);
-                    data.push(colunas[4]); 
-                }
-                res.render('home', {
-                    'lista':[
-                        usuario,
-                        produto, 
-                        os,
-                        solucao,
-                        data]
-                    });
-                });
-            });
-            
-        });
+    app.get('/delete/:id', (req, res) => {
+        req.db.collection('dados').remove({_id: ObjectID(req.params.id)}, (erro) => {
+          if(!erro){
+            res.redirect('/home');
+          }
+
+        })
+      });
         
         
         app.post('/', function(req, res){

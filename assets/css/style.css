@@ -61,11 +61,6 @@ table td{
 
 }
 
-tr td:nth-child(3) .scrollable{
-    margin: 0;
-    padding: 0;
-}
-
 section{
     display:flex;
     justify-content: center;
@@ -74,6 +69,12 @@ section{
 
 
 @media only screen and (min-width: 672px){
+
+    th{
+        background-color: black;
+        color: white;
+        padding: 10px;
+    }
     section form{
         display: block;
         align-items: center;
@@ -84,7 +85,17 @@ section{
         cursor: pointer;
     }
     
+    table tr:hover{
+        background-color: lightgrey;
+    }
+
     table td{
         font-size: 8pt;
+        border: none;
+    }
+
+    a{
+        text-decoration: none;
+        color: white;
     }
 }
