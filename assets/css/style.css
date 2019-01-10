@@ -1,13 +1,14 @@
-body{
+*{
     margin: 0;
     padding: 0;
+    font-size: 8pt;
 }
 
 header{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
+    width: 100%;
     height: 100px;
     margin-bottom: 20px;
     background-color: black;
@@ -34,12 +35,14 @@ select {
 
 button{
     background-color: rgba(240, 248, 255, 0);
-    border: 0px solid lightgreen;
-    padding: 2px;
+    border: 1px solid lightgreen;
+    color: lightgreen;
+    padding: 10px;
     border-radius: 10px;
-    width: 7vw;
-    height: 25px;
-    font-size: 5pt;
+    width: 200px;
+    height: 50px;
+    font-size: 10pt;
+    font-weight: bolder;
 }
 
 button img{
@@ -66,19 +69,106 @@ section{
     justify-content: center;
     flex-direction: column;
 }
+*{
+    margin: 0;
+    padding: 0;
+}
+input, select{
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    width: 200px;
+    height: 50px;
+}
 
+a>div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 60px;
+    color: white;
+    
+}
+a>div:hover{
+  background-color: rgb(153, 14, 14);
+  font-size: 15pt;
+}
+th{
+    background-color: black;
+    color: white;
+    padding: 10px;
+}
+section form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+table tr:hover{
+    background-color: lightgrey;
+}
+
+table td{
+    font-size: 8pt;
+    border: none;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
 
 @media only screen and (min-width: 672px){
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    input, select{
+        border: 1px solid black;
+        padding: 10px;
+        border-radius: 10px;
+        width: 200px;
+        height: 50px;
+    }
 
+    button{
+        background-color: rgba(240, 248, 255, 0);
+        border: 1px solid lightgreen;
+        padding: 10px;
+        border-radius: 10px;
+        width: 200px;
+        height: 50px;
+        font-size: 5pt;
+    }
+    
+
+    a>div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        width: 60px;
+        color: white;
+        
+    }
+    a>div:hover{
+      background-color: rgb(153, 14, 14);
+      font-size: 15pt;
+    }
     th{
         background-color: black;
         color: white;
         padding: 10px;
     }
     section form{
-        display: block;
+        display: flex;
         align-items: center;
-        margin: 0 auto;
+        flex-direction: row;
     }
 
     button:hover{

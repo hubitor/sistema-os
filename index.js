@@ -43,68 +43,74 @@ app.get('/home', function(req, res) {
                 produto, 
                 os,
                 solucao,
-                data,
-                id
-            ]
-            });
-        })
-    });
-    
-    
-    app.get('/delete/:id', (req, res) => {
-        req.db.collection('dados').remove({_id: ObjectID(req.params.id)}, (erro) => {
-          if(!erro){
-            res.redirect('/home');
-          }
+                data
+            ],
+            'id': id
+        });
+    })
+});
 
-        })
-      });
+
+app.get('/delete/:id', (req, res) => {
+    req.db.collection('dados').remove({_id: ObjectID(req.params.id)}, (erro) => {
+        if(!erro){
+            res.redirect('/home');
+        }
         
+    })
+});
+
+
+app.post('/', function(req, res){
+    req.db.collection('usuarios').find({
+        nome:   req.body.usuario.toUpperCase(),
+        senha:  req.body.senha
+    }).toArray((erro, dados) => {
+        let nome = undefined;
         
-        app.post('/', function(req, res){
-            req.db.collection('usuarios').find({nome: req.body.usuario.toUpperCase(), senha: req.body.senha}).toArray((erro, dados) => {
-                let nome = undefined;
-                
-                for(let dado of dados){
-                    nome = dado.nome;
-                }
-                
-                if(nome !== undefined){
-                    req.db.collection('registro').drop();
-                    req.db.collection('registro').insert({nome: nome});
-                    res.redirect('home');
-                }else{
-                    res.render('login');
-                }
-            })
+        for(let dado of dados){
+            nome = dado.nome;
+        }
+        
+        if(nome !== undefined){
+            req.db.collection('registro').drop();
+            req.db.collection('registro').insert({nome: nome});
+            res.redirect('home');
+        }else{
+            res.render('login');
+        }
+    })
+});
+
+app.post('/home', function(req, res){
+    if(!isNaN(Number(req.body.os))){
+        let produto     = req.body.produto.toUpperCase();
+        let os          = Number(req.body.os);
+        let conserto    = req.body.conserto.toUpperCase();
+        let data        = req.body.data.split('-');
+        let databr      = (`${data[2]}-${data[1]}-${data[0]}`);
+        let user;
+        
+        req.db.collection('registro').find({}).toArray((erro, dados)=>{
+            for(let dado of dados){
+                user = dado.nome;
+            }
+            req.db.collection('dados').insert({
+                tecnico: user,
+                produto: produto,
+                os: os,
+                conserto: conserto, 
+                data: databr
+            });    
         });
         
-        app.post('/home', function(req, res){
-            let produto = req.body.produto.toUpperCase();
-            let os = req.body.os.toUpperCase();
-            let conserto = req.body.conserto.toUpperCase();
-            let data = req.body.data.split('-');
-            let databr = (`${data[2]}-${data[1]}-${data[0]}`);
-            let user;
-            
-            req.db.collection('registro').find({}).toArray((erro, dados)=>{
-                for(let dado of dados){
-                    user = dado.nome;
-                }
-                req.db.collection('dados').insert({
-                    tecnico: user,
-                    produto: produto,
-                    os: os,
-                    conserto: conserto, 
-                    data: databr
-                });    
-            });
-            
-            res.redirect('home');      
-            console.log("Arquivo salvo com sucesso");       
-        });
-        
-        app.listen(3000, ()=>{
-            console.log ("Servidor iniciado em localhost://3000");
-        });
-        
+        res.redirect('home');      
+        console.log("Arquivo salvo com sucesso");  
+    }
+    res.send('<strong>Valor invalido</strong><br/><br/> retorne à pagina e revise os valores<br/><br/>'+
+               '<a href="/home">click here</a>');
+});
+
+app.listen(3000, ()=>{
+    console.log ("Servidor iniciado em localhost://3000");
+});

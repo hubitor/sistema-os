@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sistema OS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -47,38 +48,42 @@
                 <option value="NVA-204">NVA-204</option>
                 <option value="NVA-216">NVA-216</option>
             </select>
-            <input type="text" name="os" placeholder="Numero da OS">
-            <input type="text" name="conserto" placeholder="O que foi feito">
+            <input class="input_os" type="number" name="os" placeholder="Numero da OS">
+            <input class="input_conserto"type="text" name="conserto" placeholder="O que foi feito">
             <input type="date" name="data"> 
 
-            <button><img src="./../assets/imagens/icons8-enviar-e-mail-32.png" alt=""></button>
+            <button>ENVIAR</button>
         </form>
 
         <div class="relatorio">
-            <table>
+            <table class="table table-striped table-dark">
                 <tr>
-                    <th>Técnico</th>
-                    <th>Produto</th>
-                    <th>OS</th>
-                    <th>Solução</th>
-                    <th>Data</th>
+                    <th scope="col">Técnico</th>
+                    <th scope="col">Produto</th>
+                    <th scope="col">OS</th>
+                    <th scope="col">Solução</th>
+                    <th scope="col">Data</th>
                 </tr>
-                
-                <% 
-                for (let index in lista[0]){ var id;%>
+                <tbody>
+                <% for (let index in lista[0]){ var cod;%>
                     <tr>
-                        <% for(let item of lista){ %>
+                        <% for(let item of lista){%>
                             <td>
                                 <%= item[index] %>               
                             </td>
-                            <% id = item[index]}%>
-                            <td class="id<%=index%>" style=" background-color: red; border-left: 20px solid white; color: red">
-                                <a href="/delete/<%= id %>">X</a>
+                            <% cod = id[index]}%>
+                            <td style=" background-color: red; height: 40px; width: 60px; padding: 0;">
+                                <a href="/delete/<%= cod %>"><div style="height: 40px;">X</div></a>
                             </td>
                         </tr> 
                         <%} %>
+                    </tbody>
                     </table>
                 </div>
             </section>
+
+
+            
+               
         </body>
         </html>
