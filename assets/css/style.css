@@ -4,6 +4,10 @@
     font-size: 8pt;
 }
 
+img{
+    cursor: pointer;
+}
+
 header{
     display: flex;
     justify-content: center;
@@ -31,6 +35,22 @@ input {
 select {
     width: 154px;
     height: 20px;
+}
+.container-check{
+    display: flex;
+    flex-direction: column;
+}
+
+label{
+    display: flex;
+    align-items: center;
+    height: 25px;
+    margin: 0 20px;
+}
+
+.check{
+    height: 20px;
+    width: 15px;
 }
 
 button{

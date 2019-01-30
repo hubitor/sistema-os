@@ -7,13 +7,14 @@
     <title>Sistema OS</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script defer src="./../assets/scripts/script.js"></script>
 </head>
 <body>
     <header>
         <h1>Sistema OS</h1>
     </header>
     <section>
-        <form method="POST">
+        <form method="POST" class="cadastro">
             <select name="produto" id="produto">
                 <option value="TRC-388">TRC-388</option>
                 <option value="TRC-388b">TRC-388b</option>
@@ -49,41 +50,57 @@
                 <option value="NVA-216">NVA-216</option>
             </select>
             <input class="input_os" type="number" name="os" placeholder="Numero da OS">
+            <div class="container-check">
+                    <label><input type="checkbox" class="check" id="Check1" name="correio" onclick="selectOnlyThis(this.id)" /> Correio</label>
+                    <label><input type="checkbox" class="check" id="Check2" name="recepcao" onclick="selectOnlyThis(this.id)" /> Recepção</label>
+            </div>
             <input class="input_conserto"type="text" name="conserto" placeholder="O que foi feito">
-            <input type="date" name="data"> 
-
+            <input type="date" name="data">
             <button>ENVIAR</button>
+            <a href="<%= home %>">
+                <img class="lupa" src="./../assets/imagens/lupa.png" alt="lupa" 
+                style="position: absolute; right: 30px; cursor: pointer;">
+            </a>
         </form>
-
+        
+        <form method="POST" class="busca" style="display:none">
+            <input  type="search" name="busca">
+            <button>
+                <img class="lupa" src="./../assets/imagens/lupa.png" alt="lupa">
+            </button>
+            
+        </form>
+        
         <div class="relatorio">
             <table class="table table-striped table-dark">
                 <tr>
                     <th scope="col">Técnico</th>
                     <th scope="col">Produto</th>
                     <th scope="col">OS</th>
+                    <th scope="col">Entrada</th>
                     <th scope="col">Solução</th>
                     <th scope="col">Data</th>
                 </tr>
                 <tbody>
-                <% for (let index in lista[0]){ var cod;%>
-                    <tr>
-                        <% for(let item of lista){%>
-                            <td>
-                                <%= item[index] %>               
-                            </td>
-                            <% cod = id[index]}%>
-                            <td style=" background-color: red; height: 40px; width: 60px; padding: 0;">
-                                <a href="/delete/<%= cod %>"><div style="height: 40px;">X</div></a>
-                            </td>
-                        </tr> 
-                        <%} %>
-                    </tbody>
+                    <% for (let index in lista[1]){ var cod;%>
+                        <tr>
+                            <% for(let item of lista){%>
+                                <td>
+                                    <%= item[index] %>               
+                                </td>
+                                <% cod = id[index]}%>
+                                <td style=" background-color: red; height: 40px; width: 60px; padding: 0;">
+                                    <a href="/delete/<%= cod %>"><div style="height: 40px;">X</div></a>
+                                </td>
+                            </tr> 
+                            <%} %>
+                        </tbody>
                     </table>
                 </div>
             </section>
-
-
             
-               
+            
+            
+            
         </body>
         </html>
