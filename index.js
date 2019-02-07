@@ -3,25 +3,30 @@ const bodyParser    = require ('body-parser');
 const db            = require ('express-mongo-db');
 const ObjectID      = require ('mongodb').ObjectID;
 const pesquisar     = require ('./pesquisar');
-// const usuario       = require ('./usuario');
+const cookieParser  = require ('cookie-parser');
 
 const app = express();
 
-app.use(db("mongodb://localhost:27017/os"));
+//middlewares utilizadas no sistema
+app.use (db("mongodb://localhost:27017/os"));   //endereço do banco
+app.use ('/assets', express.static('assets'));  //utilização de arquivos staticos
+app.use (bodyParser.urlencoded());              //padrão de comunicação ??
+app.use (cookieParser());                       //cookie, para armazenar dados dos usuarios
 
 app.set('view engine','ejs');
 
-app.use('/assets', express.static('assets'));
-app.use(bodyParser.urlencoded());
-
-
 //Funções GET **************************************************************************************
 app.get('/', function(req, res){
+    res.redirect('login');
+});
+
+app.get('/login', function(req, res){
     res.render('login');
 });
 
 app.get('/home', function(req, res) {
-        pesquisar(req, res, null);
+    let nome = req.cookies
+        pesquisar(req, res, null, nome);
     });
 
 app.get('/:data', (req, res) => {
@@ -44,7 +49,8 @@ app.get('/:data', (req, res) => {
     });
     
     //Funções POST *********************************************************************************************
-    app.post('/', function(req, res){
+    app.post('/login', function(req, res){
+        res.cookie('nome', req.body.usuario.toUpperCase());
         if(req.body.usuario.toLowerCase() === "travar"){
             req.db.collection('travar').drop();
             req.db.collection('travar').insert({travar: 0});
@@ -68,14 +74,13 @@ app.get('/:data', (req, res) => {
                 if(nome !== undefined && travar == 0){
                     req.db.collection('registro').drop();
                     req.db.collection('registro').insert({nome: nome});
+                    console.log(req.cookies);
                     res.redirect('home');
                 }else{
                     res.render('login');
                 }
             })
         });
-
-        
     });
     
     app.post('/home', function(req, res){
@@ -91,7 +96,7 @@ app.get('/:data', (req, res) => {
             CorR = "recepção"
         }
         
-            let nome        = req.body.nome.toUpperCase();
+            let nome        = req.cookies.nome;
             let produto     = req.body.produto.toUpperCase();
             let os          = Number(req.body.os);
             let entrada     = CorR;
@@ -110,9 +115,6 @@ app.get('/:data', (req, res) => {
             
             res.redirect('home');      
             console.log("Arquivo salvo com sucesso");  
-        
-        res.send('<strong>Valor invalido</strong><br/><br/> retorne à pagina e revise os valores<br/><br/>'+
-        '<a href="/home">click here</a>');
     });
     
 
