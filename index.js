@@ -1,8 +1,9 @@
-const express = require ('express');
-const bodyParser = require ('body-parser');
-const db = require ('express-mongo-db');
-const ObjectID = require('mongodb').ObjectID;
-const pesquisar = require('./pesquisar');
+const express       = require ('express');
+const bodyParser    = require ('body-parser');
+const db            = require ('express-mongo-db');
+const ObjectID      = require ('mongodb').ObjectID;
+const pesquisar     = require ('./pesquisar');
+// const usuario       = require ('./usuario');
 
 const app = express();
 
@@ -20,10 +21,8 @@ app.get('/', function(req, res){
 });
 
 app.get('/home', function(req, res) {
-    
-    pesquisar(req, res, null);
-    
-});
+        pesquisar(req, res, null);
+    });
 
 app.get('/:data', (req, res) => {
     
@@ -46,28 +45,41 @@ app.get('/:data', (req, res) => {
     
     //Funções POST *********************************************************************************************
     app.post('/', function(req, res){
-        req.db.collection('usuarios').find({
-            nome:   req.body.usuario.toUpperCase(),
-            senha:  req.body.senha
-        }).toArray((erro, dados) => {
-            let nome = undefined;
-            
+        if(req.body.usuario.toLowerCase() === "travar"){
+            req.db.collection('travar').drop();
+            req.db.collection('travar').insert({travar: 0});
+        }
+        let travar;
+        req.db.collection('travar').find({}).toArray((erro, dados) =>{
             for(let dado of dados){
-                nome = dado.nome;
+                travar = dado.travar;
             }
-            
-            if(nome !== undefined){
-                req.db.collection('registro').drop();
-                req.db.collection('registro').insert({nome: nome});
-                res.redirect('home');
-            }else{
-                res.render('login');
-            }
-        })
+
+            req.db.collection('usuarios').find({
+                nome:   req.body.usuario.toUpperCase(),
+                senha:  req.body.senha
+            }).toArray((erro, dados) => {
+                let nome = undefined;
+                
+                for(let dado of dados){
+                    nome = dado.nome;
+                }
+                
+                if(nome !== undefined && travar == 0){
+                    req.db.collection('registro').drop();
+                    req.db.collection('registro').insert({nome: nome});
+                    res.redirect('home');
+                }else{
+                    res.render('login');
+                }
+            })
+        });
+
+        
     });
     
     app.post('/home', function(req, res){
-        let CorR = null;
+        let CorR = "null";
         if(req.body.busca !== undefined){
             res.redirect('/'+req.body.busca);
         }
@@ -79,31 +91,26 @@ app.get('/:data', (req, res) => {
             CorR = "recepção"
         }
         
-        if(!isNaN(Number(req.body.os))){
+            let nome        = req.body.nome.toUpperCase();
             let produto     = req.body.produto.toUpperCase();
             let os          = Number(req.body.os);
             let entrada     = CorR;
             let conserto    = req.body.conserto.toUpperCase();
             let data        = req.body.data.split('-');
             let databr      = (`${data[2]}-${data[1]}-${data[0]}`);
-            
-            req.db.collection('registro').find({}).toArray((erro, dados)=>{
-                for(let dado of dados){
-                    user = dado.nome;
-                }
+
                 req.db.collection('dados').insert({
-                    tecnico: user,
+                    tecnico: nome,
                     produto: produto,
                     os: os,
                     entrada: entrada,
                     conserto: conserto, 
                     data: databr
                 });    
-            });
             
             res.redirect('home');      
             console.log("Arquivo salvo com sucesso");  
-        }
+        
         res.send('<strong>Valor invalido</strong><br/><br/> retorne à pagina e revise os valores<br/><br/>'+
         '<a href="/home">click here</a>');
     });

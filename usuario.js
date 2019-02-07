@@ -1,5 +1,5 @@
-class User{
-    constructor(name) {
-        this.nome = nome
-    }
+function user(nome){
+    this.nome = nome;
 }
+
+module.exports = user;
