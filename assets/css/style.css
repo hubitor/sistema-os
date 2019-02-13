@@ -8,7 +8,7 @@ img{
     cursor: pointer;
 }
 
-header{
+header {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,8 +16,14 @@ header{
     height: 100px;
     margin-bottom: 20px;
     background-color: black;
-    color: red;
+    
 }
+
+header>a{
+    color: red;
+    text-decoration: none;
+}
+
 
 section form{
     display: flex;

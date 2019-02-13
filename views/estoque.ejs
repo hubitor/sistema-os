@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sistema OS</title>
+    <link rel="icon" href="./images/favicon.png" type="image/png" sizes="32x32"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../assets/css/estoque.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>$(document).ready(function() {
+        $('#example').DataTable();
+    } );</script>
+
+</head>
+<body>
+    <header>
+        <a href="./home.ejs"><h1>Estoque</h1></a>
+    </header>
+<table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>CAIXA</th>
+                <th>PRODUTO</th>    
+                <th>DESCRIÇÃO</th>
+                <th>PREÇO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let index in lista[0]){%>
+                <tr>
+                    <%for (let dado of lista){%>
+                        <td><%= dado[index]%></td>
+                    <%}%>
+                </tr> 
+                    <%} %>
+                </tbody>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+            </tr>
+        </tfoot>
+    </table>
+    </body>
+    </html>

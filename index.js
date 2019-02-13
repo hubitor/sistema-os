@@ -20,6 +20,26 @@ app.get('/', function(req, res){
     res.redirect('login');
 });
 
+app.get('/adm', function(req, res){
+    res.render('adm');
+});
+
+app.post('/adm', function(req, res){
+    let caixa = req.body.caixa;
+    let produto = req.body.produto;
+    let descricao = req.body.descricao;
+    let preco = req.body.preco;
+
+    req.db.collection('estoque').insert({
+        caixa: caixa,
+        produto: produto,
+       descricao:descricao,
+        preco: preco
+    })
+
+    res.render('adm');
+});
+
 app.get('/login', function(req, res){
     res.render('login');
 });
@@ -28,6 +48,41 @@ app.get('/home', function(req, res) {
     let nome = req.cookies
         pesquisar(req, res, null, nome);
     });
+
+app.get('/estoque', function(req, res){
+    // req.db.collection('registro').find({}).toArray((erro, dados) =>{
+            
+    //     for(let dado of dados){
+    //         nome = dado.nome;
+    //     }
+        
+            req.db.collection('estoque').find({}).toArray((erro,dados)=>{
+                let caixa = [];
+                let produto = [];
+                let descricao = [];
+                let preco = [];
+
+                
+                for (let dado of dados){
+                    caixa.push(dado.caixa);
+                    produto.push(dado.produto);
+                    descricao.push(dado.descricao);
+                    preco.push(dado.preco)
+
+                }
+                res.render('estoque', {
+                    'lista':[
+                        caixa,
+                        produto, 
+                        descricao,
+                        preco,
+
+                    ],
+                    'home': ""
+                });
+            })
+        });
+// })
 
 app.get('/:data', (req, res) => {
     
