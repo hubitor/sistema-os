@@ -1,5 +1,5 @@
 function pesquisar(req, res, dado, user){
-    console.log('chegou no pesquisar');
+
     let nome = user;
     if(dado === null){
         req.db.collection('registro').find({}).toArray((erro, dados) =>{

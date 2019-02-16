@@ -6,9 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sistema OS</title>
     <link rel="icon" href="./images/favicon.png" type="image/png" sizes="32x32"/>
+    <link rel="stylesheet" href="/assets/css/css/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/style.css">
     <script defer src="./../assets/scripts/script.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="/assets/scripts/js/jquery.dataTables.min.js"></script>
+    <script>$(document).ready(function() {
+        $('#example').DataTable();
+    } );</script>
 </head>
 <body>
     <header>
@@ -54,28 +61,16 @@
             </select>
             <input class="input_os" type="number" name="os" placeholder="Numero da OS">
             <div class="container-check">
-                    <label><input type="checkbox" class="check" id="Check1" name="correio" onclick="selectOnlyThis(this.id)" /> Correio</label>
-                    <label><input type="checkbox" class="check" id="Check2" name="recepcao" onclick="selectOnlyThis(this.id)" /> Recepção</label>
+                <label><input type="checkbox" class="check" id="Check1" name="correio" onclick="selectOnlyThis(this.id)" /> Correio</label>
+                <label><input type="checkbox" class="check" id="Check2" name="recepcao" onclick="selectOnlyThis(this.id)" /> Recepção</label>
             </div>
             <input class="input_conserto"type="text" name="conserto" placeholder="O que foi feito">
             <input type="date" name="data">
             <button>ENVIAR</button>
-            <a href="<%= home %>">
-                <img class="lupa" src="./../assets/imagens/lupa.png" alt="lupa" 
-                style="position: absolute; right: 30px; cursor: pointer;">
-            </a>
         </form>
         
-        <form method="POST" class="busca" style="display:none">
-            <input  type="search" name="busca">
-            <button>
-                <img class="lupa" src="./../assets/imagens/lupa.png" alt="lupa">
-            </button>
-            
-        </form>
-        
-        <div class="relatorio">
-            <table class="table table-striped table-dark">
+        <table id="example" class="display" style="width:100%">
+            <thead>
                 <tr>
                     <th scope="col">Técnico</th>
                     <th scope="col">Produto</th>
@@ -83,27 +78,35 @@
                     <th scope="col">Entrada</th>
                     <th scope="col">Solução</th>
                     <th scope="col">Data</th>
+                    <th scope="col">Excluir</th>
                 </tr>
-                <tbody>
-                    <% for (let index in lista[1]){ var cod;%>
+            </thead>
+            <tbody>
+                <% for (let index in lista[1]){ var cod;%>
+                    <tr>
+                        <% for(let item of lista){%>
+                            <td>
+                                <%= item[index] %>               
+                            </td>
+                            <% cod = id[index]}%>
+                            <td style=" background-color: red; height: 40px; width: 60px; padding: 0;">
+                                <a href="/delete/<%= cod %>"><div style="height: 40px;">X</div></a>
+                            </td>
+                        </tr> 
+                        <%} %>
+                    </tbody>
+                    <tfoot>
                         <tr>
-                            <% for(let item of lista){%>
-                                <td>
-                                    <%= item[index] %>               
-                                </td>
-                                <% cod = id[index]}%>
-                                <td style=" background-color: red; height: 40px; width: 60px; padding: 0;">
-                                    <a href="/delete/<%= cod %>"><div style="height: 40px;">X</div></a>
-                                </td>
-                            </tr> 
-                            <%} %>
-                        </tbody>
-                    </table>
+                            <th scope="col">Técnico</th>
+                            <th scope="col">Produto</th>
+                            <th scope="col">OS</th>
+                            <th scope="col">Entrada</th>
+                            <th scope="col">Solução</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Excluir</th>
+                        </tr>
+                    </tfoot>
                 </div>
-            </section>
-            
-            
-            
-            
+            </section>       
         </body>
         </html>
