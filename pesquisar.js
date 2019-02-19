@@ -77,4 +77,37 @@ function pesquisar(req, res, dado, user){
     }
 }
 
+function exibirEstoque(req, res){
+    req.db.collection('estoque').find({}).toArray((erro,dados)=>{
+        let caixa = [];
+        let produto = [];
+        let descricao = [];
+        let preco = [];
+        
+        
+        for (let dado of dados){
+            caixa.push(dado.caixa);
+            produto.push(dado.produto);
+            descricao.push(dado.descricao);
+            preco.push(dado.preco)
+            
+        }
+        res.render('estoque', {
+            'lista':[
+                caixa,
+                produto, 
+                descricao,
+                preco, 
+            ],
+            'home': ""
+        });
+    })
+}
+
+
+// module.exports = exibirEstoque;
 module.exports = pesquisar;
+
+// exports.pesquisar = pesquisar();
+// exports.pesquisa = exibirEstoque;
+

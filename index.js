@@ -14,10 +14,6 @@ app.use (cookieParser());                               //cookie, para armazenar
 
 app.set('view engine','ejs');
 
-
-
-
-
 app.use('/', router);
 
     app.listen(3000, ()=>{
