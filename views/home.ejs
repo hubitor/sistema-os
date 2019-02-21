@@ -14,7 +14,17 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="/assets/scripts/js/jquery.dataTables.min.js"></script>
     <script>$(document).ready(function() {
-        $('#example').DataTable();
+        $('#example').DataTable({
+            "order": [[ 2, "desc" ]],
+            "language": {
+            "lengthMenu": "Exibir _MENU_ items por pagina",
+            "zeroRecords": "Nenhum registro encontrado",
+            "info": "Exibindo pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "No records available",
+            "infoFiltered": "(filtrado de _MAX_ items)"
+        },
+        "lengthMenu": [[25, 10, 50, -1], [25, 10, 50, "All"]]
+        });
     } );</script>
 </head>
 <body>

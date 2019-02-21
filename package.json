@@ -20,6 +20,7 @@
     "express": "^4.16.4",
     "express-mongo-db": "^2.0.4",
     "is-null-or-empty": "0.0.1",
-    "mongodb": "^3.1.10"
+    "mongodb": "^3.1.10",
+    "mssql": "^4.3.2"
   }
 }
