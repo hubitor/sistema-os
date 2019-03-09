@@ -6,7 +6,7 @@ const pesquisar     = require ('./pesquisar');
 // const exibirEstoque     = require ('./exibirEstoque');
 const ObjectID      = require ('mongodb').ObjectID;
 
-const connStr = "Server=186.202.125.164;Database=ccpdeltaat;User Id=ccpdeltaat;Password=Loca1020;";
+const connStr = "Server=xxx.xxx.xxx.xxx;Database=xxx;User Id=xxx;Password=xxx;";
 const sql = require("mssql");
 
 
