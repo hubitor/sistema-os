@@ -6,7 +6,7 @@ const pesquisar     = require ('./pesquisar');
 // const exibirEstoque     = require ('./exibirEstoque');
 const ObjectID      = require ('mongodb').ObjectID;
 
-const connStr = "Server=xxx.xxx.xxx.xxx;Database=xxx;User Id=xxx;Password=xxx;";
+const connStr = "Server=186.202.125.164;Database=ccpdeltaat;User Id=ccpdeltaat;Password=Loca1020;";
 const sql = require("mssql");
 
 
@@ -17,7 +17,7 @@ sql.connect(connStr)
 function execSQLQuery(sqlQry, res){
     global.conn.request()
                .query(sqlQry)
-               .then(result => res.send("funcionou"))
+               .then(result => console.log("funcionou"))
                .catch(err => res.json(err));
 }
 
