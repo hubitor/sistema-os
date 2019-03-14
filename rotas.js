@@ -6,7 +6,7 @@ const pesquisar     = require ('./pesquisar');
 // const exibirEstoque     = require ('./exibirEstoque');
 const ObjectID      = require ('mongodb').ObjectID;
 
-const connStr = "Server=xxx.xxx.xxx.xxx;Database=xxx;User Id=xxx;Password=xxx;";
+const connStr = "Server=xxx;Database=xxx;User Id=xxx;Password=xxx;";
 const sql = require("mssql");
 
 
@@ -32,25 +32,14 @@ router.get('/adm', function(req, res){
     res.render('adm');
 });
 
-router.post('/adm', function(req, res){
-    let caixa       = req.body.caixa;
-    let produto     = req.body.produto;
-    let descricao   = req.body.descricao;
-    let preco       = req.body.preco;
-    
-    req.db.collection('estoque').insert({
-        caixa:      caixa,
-        produto:    produto,
-        descricao:  descricao,
-        preco:      preco
-    })
-    
-    res.render('adm');
-});
-
 router.get('/login', function(req, res){
     res.render('login');
 });
+
+router.get('/sair', function(req, res){
+    res.clearCookie('nome');
+    res.redirect('login');
+})
 
 router.get('/home', function(req, res) {
     let nome = "ssdsad";
@@ -102,7 +91,7 @@ router.get('/delete/:id', (req, res) => {
 router.post('/login', function(req, res){
     let travar;
     
-    res.cookie('nome', req.body.usuario.toUpperCase());
+    res.cookie('nome', req.body.usuario.toUpperCase(), { expires: new Date(Date.now() + 1800000), httpOnly: true });
     
     //condição para trava o sistema
     if(req.body.usuario.toLowerCase() === "travar"){
@@ -138,10 +127,6 @@ router.post('/home', function(req, res){
     
     let CorreioRecepcao = "null";
     
-    if(req.body.busca !== undefined){
-        res.redirect('/'+req.body.busca);
-    }
-    
     if(req.body.correio){
         CorreioRecepcao = "correio"
     }
@@ -158,6 +143,11 @@ router.post('/home', function(req, res){
     let dataDelta   = (`${data[0]}-${data[1]}-${data[2]}`);
     let databr      = (`${data[2]}/${data[1]}/${data[0]}`);
 
+    if(nome === undefined || nome === "" || nome === null){
+        res.redirect('/');
+        return;
+    }
+
     if(os === 0 || entrada === null || conserto === "" || data[2] === undefined){
         res.send('Erro: preencha todos os dados');
         return;
@@ -171,6 +161,22 @@ router.post('/home', function(req, res){
         conserto: conserto, 
         data:     databr
     });    
+
+    router.post('/adm', function(req, res){
+        let caixa       = req.body.caixa;
+        let produto     = req.body.produto;
+        let descricao   = req.body.descricao;
+        let preco       = req.body.preco;
+        
+        req.db.collection('estoque').insert({
+            caixa:      caixa,
+            produto:    produto,
+            descricao:  descricao,
+            preco:      preco
+        })
+        
+        res.render('adm');
+    });
 
     // execSQLQuery(`UPDATE Clientes SET Nome='${nome}', CPF='${cpf}' WHERE ID=${id}`, res);
     

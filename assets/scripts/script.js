@@ -35,3 +35,7 @@ function selectOnlyThis(id) {
     }
     document.getElementById(id).checked = true;
 }
+
+function sair(){
+    
+}
