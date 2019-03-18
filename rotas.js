@@ -5,20 +5,58 @@ const express       = require('express');
 const pesquisar     = require ('./pesquisar');
 // const exibirEstoque     = require ('./exibirEstoque');
 const ObjectID      = require ('mongodb').ObjectID;
-
-const connStr = "Server=xxx;Database=xxx;User Id=xxx;Password=xxx;";
-const sql = require("mssql");
+const sql           = require("mssql");
 
 
-sql.connect(connStr)
-.then(conn => global.conn = conn)
-.catch(err => console.log(err));
+// config for your database
+var config = {
+    user: 'ccpdeltaat',
+    password: 'Loca1020',
+    server: '186.202.125.164', 
+    database: 'ccpdeltaat' 
+};
 
-function execSQLQuery(sqlQry, res){
-    global.conn.request()
-               .query(sqlQry)
-               .then(result => console.log("funcionou"))
-               .catch(err => res.json(err));
+// connect to your database
+let insertDelta =  function (tecnico, os, conserto, data){
+    
+    let posicao;
+    
+    
+    sql.connect(config, function (err) {
+        
+        if (err) console.log(err);
+        
+        // create Request object
+        var request = new sql.Request();
+        
+        request.query(`select posicao from ITEMAT WHERE cod_assistencia = ${os} `, function (err, recordset) {
+            
+            if (err) console.log(err)
+            
+            // send records as a response
+            posicao = recordset.recordsets[0][0].posicao;
+            
+            if (posicao === "EM CONSERTO"){
+                posicao = "CONSERTADO";
+            } 
+            
+            
+            // query to the database and get the records
+            request.query(`UPDATE ITEMAT SET 
+            desc_problema2='LAB: ${conserto}',
+            posicao = '${posicao}', 
+            tecnico = '${tecnico}', 
+            dt_conserto = '${data}' 
+            WHERE cod_assistencia= ${os}`, function (err, recordset) {
+                
+                if (err) console.log(err+"deu erro aqui");
+                
+                sql.close();
+            });
+        });
+    });
+    
+    
 }
 
 const router        = express.Router();
@@ -42,15 +80,18 @@ router.get('/sair', function(req, res){
 })
 
 router.get('/home', function(req, res) {
+    
     let nome = "ssdsad";
     nome = req.cookies;
+    
     //caso não esteja logado, ir para a tela de login
     if(nome.nome === undefined){
         res.redirect('login');
         return;
     }
-
+    
     pesquisar(req, res, null, nome);
+    
 });
 
 router.get('/estoque', function(req, res){
@@ -60,7 +101,7 @@ router.get('/estoque', function(req, res){
         let produto = [];
         let descricao = [];
         let preco = [];
-
+        
         for (let dado of dados){
             caixa.push(dado.caixa);
             produto.push(dado.produto);
@@ -142,12 +183,12 @@ router.post('/home', function(req, res){
     let data        = req.body.data.split('-');
     let dataDelta   = (`${data[0]}-${data[1]}-${data[2]}`);
     let databr      = (`${data[2]}/${data[1]}/${data[0]}`);
-
+    
     if(nome === undefined || nome === "" || nome === null){
         res.redirect('/');
         return;
     }
-
+    
     if(os === 0 || entrada === null || conserto === "" || data[2] === undefined){
         res.send('Erro: preencha todos os dados');
         return;
@@ -161,28 +202,27 @@ router.post('/home', function(req, res){
         conserto: conserto, 
         data:     databr
     });    
-
-    router.post('/adm', function(req, res){
-        let caixa       = req.body.caixa;
-        let produto     = req.body.produto;
-        let descricao   = req.body.descricao;
-        let preco       = req.body.preco;
-        
-        req.db.collection('estoque').insert({
-            caixa:      caixa,
-            produto:    produto,
-            descricao:  descricao,
-            preco:      preco
-        })
-        
-        res.render('adm');
-    });
-
-    // execSQLQuery(`UPDATE Clientes SET Nome='${nome}', CPF='${cpf}' WHERE ID=${id}`, res);
     
-    execSQLQuery(`UPDATE ITEMAT SET desc_problema2='LAB: ${conserto}', posicao = 'CONSERTADO', tecnico = '${nome}', dt_conserto = '${dataDelta}' WHERE cod_assistencia= ${os}`, res);
-    console.log(dataDelta);
+    insertDelta(nome, os, conserto, dataDelta);
     res.redirect('home');      
 });
+
+
+router.post('/adm', function(req, res){
+    let caixa       = req.body.caixa;
+    let produto     = req.body.produto;
+    let descricao   = req.body.descricao;
+    let preco       = req.body.preco;
+    
+    req.db.collection('estoque').insert({
+        caixa:      caixa,
+        produto:    produto,
+        descricao:  descricao,
+        preco:      preco
+    })
+    
+    res.render('adm');
+});
+
 
 module.exports = router;
