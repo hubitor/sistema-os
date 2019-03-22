@@ -10,10 +10,10 @@ const sql           = require("mssql");
 
 // config for your database
 var config = {
-    user: 'ccpdeltaat',
-    password: 'Loca1020',
-    server: '186.202.125.164', 
-    database: 'ccpdeltaat' 
+    user: 'XXX',
+    password: 'XXX',
+    server: 'XXX', 
+    database: 'XXX' 
 };
 
 // connect to your database
