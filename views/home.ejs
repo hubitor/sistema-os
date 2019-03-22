@@ -9,21 +9,24 @@
     <link rel="stylesheet" href="/assets/css/css/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/style.css">
+    
+    
+    
     <script defer src="./../assets/scripts/script.js"></script>
-
+    
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="/assets/scripts/js/jquery.dataTables.min.js"></script>
     <script>$(document).ready(function() {
         $('#example').DataTable({
             "order": [[ 2, "desc" ]],
             "language": {
-            "lengthMenu": "Exibir _MENU_ items por pagina",
-            "zeroRecords": "Nenhum registro encontrado",
-            "info": "Exibindo pagina _PAGE_ de _PAGES_",
-            "infoEmpty": "No records available",
-            "infoFiltered": "(filtrado de _MAX_ items)"
-        },
-        "lengthMenu": [[25, 10, 50, -1], [25, 10, 50, "All"]]
+                "lengthMenu": "Exibir _MENU_ items por pagina",
+                "zeroRecords": "Nenhum registro encontrado",
+                "info": "Exibindo pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(filtrado de _MAX_ items)"
+            },
+            "lengthMenu": [[25, 10, 50, -1], [25, 10, 50, "All"]]
         });
     } );</script>
 </head>
@@ -87,20 +90,26 @@
                     <th scope="col">Técnico</th>
                     <th scope="col">Produto</th>
                     <th scope="col">OS</th>
-                    <th scope="col">Entrada</th>
-                    <th scope="col">Solução</th>
+                    <th scope="col" class="column3">Entrada</th>
+                    <th scope="col " class="column4">Solução</th>
                     <th scope="col">Data</th>
                     <th scope="col">Excluir</th>
                 </tr>
             </thead>
             <tbody>
-                <% for (let index in lista[1]){ var cod;%>
-                    <tr>
-                        <% for(let item of lista){%>
-                            <td>
+                <% let colunm = 0;
+                
+                for (let index in lista[1]){ var cod;%>
+                    <tr class="linha">
+                        <% for(let item of lista){
+                            if (colunm > 5){
+                                colunm = 0;
+                            }%>
+                            <td class="column<%=colunm%>">
                                 <%= item[index] %>               
                             </td>
-                            <% cod = id[index]}%>
+                            <% cod = id[index]
+                        colunm++;}%>
                             <td style=" background-color: red; height: 40px; width: 60px; padding: 0;">
                                 <a href="/delete/<%= cod %>"><div style="height: 40px;">X</div></a>
                             </td>
@@ -112,12 +121,43 @@
                             <th scope="col">Técnico</th>
                             <th scope="col">Produto</th>
                             <th scope="col">OS</th>
-                            <th scope="col">Entrada</th>
-                            <th scope="col">Solução</th>
+                            <th scope="col" class="column3">Entrada</th>
+                            <th scope="col" class="column4">Solução</th>
                             <th scope="col">Data</th>
                             <th scope="col">Excluir</th>
                         </tr>
                     </tfoot>
+                </table>
+                <div class="maisInfo" style="display: none">
+                    <div class="headerInfo">
+                        <p>Ordem de Serviço: <strong>0000</strong> CORREIO</p>
+                        <p>Data de Entrada: <strong>01/01/2001</strong></p>
+                    </div>
+                    <div class="infoStatus">
+                        <h2><strong>Status</strong></h2>
+                        <select name="status" id="">
+                            <option value="CONSERTADO">CONSERTADO</option>
+                            <option value="AGUARDANDO">AGUARDANDO</option>
+                            <option value="EM CONSERTO">EM CONSERTO</option>
+                            <option value="CORREIO">CORREIO</option>
+                            <option value="RETIRADO">RETIRADO</option>
+                        </select> 
+                    </div>
+                    <div class="infoSection1">
+                        <div><strong>Produto:</strong></div>
+                        <div><strong>Defeito:</strong></div>
+                        <div><strong>Solução:</strong></div>
+                        <div><strong>Técnico:</strong></div>
+                    </div>
+                    <div class="infoSection2">
+                        <div><strong>Observações</strong></div>
+                        <textarea rows="4" cols="50" name="comment" form="usrform">
+                            Enter text here...</textarea>
+                    </div>
+                    <div>
+                        <p>Salvar</p>
+                        <p onclick="sair()">Sair</p>
+                    </div>
                 </div>
             </section>       
         </body>

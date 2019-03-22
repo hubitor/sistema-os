@@ -1,32 +1,23 @@
 // Comandos de click
-let contadorLupa = 0;
 
-function removerLink(){
-    var link = document.querySelector('.cadastro a')
-    
-    if (link.getAttribute('href') === ""){
-        link.parentNode.removeChild(link);
-        let imagem = document.createElement("img");
-        imagem.src = "./../assets/imagens/lupa.png"
-        imagem.className = "lupa";
-        
+let linhas = document.querySelectorAll('.linha');
 
-        document.querySelector('.cadastro').appendChild(imagem);
+let painel = document.createElement('input');
+
+function exibirInfo(event){
+    for(let linha of linhas){
+        if(document.querySelector('.maisInfo').style.display==="none")
+        document.querySelector('.maisInfo').style.display="block";
+        else
+        document.querySelector('.maisInfo').style.display=""
+        //  '<div class="maisInfo">aaa</div>';
     }
 }
 
-removerLink();
-
-document.querySelector('.lupa').onclick = function(event){
-    if(contadorLupa < 1){
-        console.log("foi");
-        document.querySelector(".cadastro").style.display = "none";
-        document.querySelector(".busca").style.display = "block";
-        contadorLupa++;
-        console.log(contadorLupa);
-        return;
-    }
+for (i = 0; i < linhas.length; i++) {
+    linhas[i].onclick = exibirInfo;
 }
+
 
 function selectOnlyThis(id) {
     for (let i = 1;i <= 2; i++)
@@ -37,5 +28,5 @@ function selectOnlyThis(id) {
 }
 
 function sair(){
-    
+    document.querySelector('.maisInfo').style.display = "none";
 }

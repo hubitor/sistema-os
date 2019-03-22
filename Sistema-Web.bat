@@ -1,3 +1,3 @@
-
+ipconfig
 
 nodemon start
